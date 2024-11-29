@@ -3,8 +3,10 @@ const getSearches = () =>
 
 const storeSearch = (search) => {
   const searches = getSearches();
-  searches.push(search);
-  window.localStorage.setItem("searches", JSON.stringify(searches));
+  if (!searches.includes(search)) {
+    searches.push(search);
+    window.localStorage.setItem("searches", JSON.stringify(searches));
+  }
 };
 
 const renderSearches = () => {
@@ -83,7 +85,7 @@ function displayImage() {
     index
       .saveObject({
         ...imageRecord,
-        objectID: Date.now().toString(),
+        objectID: imageRecord.prompt,
       })
       .catch((err) => {
         console.error(err);
