@@ -64,6 +64,30 @@ function displayImage() {
 
     storeSearch(text);
     renderSearches();
+
+    const imageRecord = {
+      prompt: text,
+      imageUrl: image.src,
+      timestamp: new Date().toISOString(),
+      width: width || null,
+      height: height || null,
+      seed: seed || null,
+    };
+
+    const client = algoliasearch(
+      config.ALGOLIA_APP_ID,
+      config.ALGOLIA_ADMIN_KEY
+    );
+    const index = client.initIndex("SPEC_IMAGES");
+
+    index
+      .saveObject({
+        ...imageRecord,
+        objectID: Date.now().toString(),
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   } else {
     alert("Please, insert some text.");
   }
