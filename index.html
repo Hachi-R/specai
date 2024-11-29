@@ -1,38 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="stylesheet" href="styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
     <title>SpecAI - AI image generating tool powered by Pollinations AI</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="form-container">
-        <div id="image-container">
-            <div id="loading-spinner"></div>
+      <div id="image-container">
+        <div id="loading-spinner"></div>
+      </div>
+      <form onsubmit="return false;">
+        <div id="text-input-container">
+          <input
+            type="text"
+            id="text-input"
+            name="text-input"
+            placeholder="Insert your prompt..."
+            onkeydown="handleKeyDown(event)"
+          />
+          <input
+            type="button"
+            id="submit-button"
+            value="Generate"
+            onclick="displayImage()"
+          />
         </div>
-        <form onsubmit="return false;">
-            <div id="text-input-container">
-                <input type="text" id="text-input" name="text-input" placeholder="Insert your prompt..."
-                    onkeydown="handleKeyDown(event)">
-                <input type="button" id="submit-button" value="Generate" onclick="displayImage()">
-            </div>
-            <span id="toggle-custom" onclick="toggleCustom()">Custom Options ✨</span>
-            <div id="custom-options">
-                <input type="text" id="width-input" class="custom-input" placeholder="Enter width (e.g: 1280)">
-                <input type="text" id="height-input" class="custom-input" placeholder="Enter height (e.g: 720)">
-                <input type="text" id="seed-input" class="custom-input" placeholder="Enter seed (optional)">
-            </div>
-        </form>
-    </div>
-    
-    <script src="script.js"></script>
-</body>
 
+        <p>Prompts anteriores</p>
+        <ul id="previous-prompts"></ul>
+
+        <span id="toggle-custom" onclick="toggleCustom()"
+          >Custom Options ✨</span
+        >
+        <div id="custom-options">
+          <input
+            type="text"
+            id="width-input"
+            class="custom-input"
+            placeholder="Enter width (e.g: 1280)"
+          />
+          <input
+            type="text"
+            id="height-input"
+            class="custom-input"
+            placeholder="Enter height (e.g: 720)"
+          />
+          <input
+            type="text"
+            id="seed-input"
+            class="custom-input"
+            placeholder="Enter seed (optional)"
+          />
+        </div>
+      </form>
+    </div>
+
+    <script src="index.js" type="text/javascript"></script>
+  </body>
 </html>
