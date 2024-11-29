@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<title>SpecAI - AI image generating tool powered by Pollinations AI</title>
+<style>
+  #url-input {
+    display: none;
+  }
+  #image-container {
+    text-align: center;
+    max-width: 80%;
+    margin: 0 auto 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    display: none;
+  }
+  #displayed-image {
+    max-width: 100%;
+    height: auto;
+    border: 5px solid #ffffff;
+    border-radius: 10px;
+  }
+  #form-container {
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: center;
+    position: relative;
+  }
+  #text-input {
+    width: calc(70% - 20px);
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    color: white;
+    background-color: #555;
+    text-align: left;
+    box-sizing: border-box;
+  }
+  #text-input::placeholder {
+    color: #999;
+    font-style: italic;
+  }
+  #submit-button {
+    width: 32%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    border-radius: 20px;
+    margin-left: 1px;
+  }
+  #custom-options {
+    display: none;
+    margin-top: 10px;
+  }
+  .custom-input {
+    width: 50%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    color: white;
+    background-color: #555;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  #toggle-custom {
+    cursor: pointer;
+    color: white;
+    background-color: black;
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    display: inline-block;
+  }
+  /* Spinner styles */
+  #loading-spinner {
+    display: none;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #555;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  body {
+    background-image: url('https://i.pinimg.com/originals/93/2d/f1/932df101bb5e217beb4aa0532e138c99.gif');
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: left;
+    padding: 20px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+</style>
+</head>
+<body>
+  <div id="form-container">
+    <div id="image-container">
+      <div id="loading-spinner"></div>
+    </div>
+    <form onsubmit="return false;">
+      <div id="text-input-container">
+        <input type="text" id="text-input" name="text-input" placeholder="Insert your prompt..." onkeydown="handleKeyDown(event)">
+        <input type="button" id="submit-button" value="Generate" onclick="displayImage()">
+      </div>
+      <span id="toggle-custom" onclick="toggleCustom()">Custom Options ✨</span>
+      <div id="custom-options">
+        <input type="text" id="width-input" class="custom-input" placeholder="Enter width (e.g: 1280)">
+        <input type="text" id="height-input" class="custom-input" placeholder="Enter height (e.g: 720)">
+        <input type="text" id="seed-input" class="custom-input" placeholder="Enter seed (optional)">
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function displayImage() {
+      var text = document.getElementById("text-input").value.trim();
+      var width = document.getElementById("width-input").value.trim();
+      var height = document.getElementById("height-input").value.trim();
+      var seed = document.getElementById("seed-input").value.trim();
+      var spinner = document.getElementById("loading-spinner");
+      var imageContainer = document.getElementById("image-container");
+
+      if (text !== "") {
+        spinner.style.display = "block";
+        imageContainer.style.display = "block";
+
+        var imageUrl = "https://image.pollinations.ai/prompt/" + encodeURIComponent(text);
+
+        if (width !== "") {
+          imageUrl += "?width=" + encodeURIComponent(width);
+        }
+        if (height !== "") {
+          imageUrl += "&height=" + encodeURIComponent(height);
+        }
+        if (seed !== "") {
+          imageUrl += "&seed=" + encodeURIComponent(seed);
+        }
+
+        var existingImage = document.getElementById("displayed-image");
+        if (existingImage) {
+          existingImage.remove();
+        }
+
+        var image = document.createElement("img");
+        image.id = "displayed-image";
+        image.onload = function() {
+          spinner.style.display = "none";
+        };
+        image.onerror = function() {
+          spinner.style.display = "none";
+          alert("Failed to load image. Please try again.");
+        };
+        image.src = imageUrl;
+        document.getElementById("image-container").appendChild(image);
+      } else {
+        alert("Please, insert some text.");
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === "Enter") {
+        displayImage();
+      }
+    }
+
+    function toggleCustom() {
+      var customOptions = document.getElementById("custom-options");
+      customOptions.style.display = customOptions.style.display === "block" ? "none" : "block";
+    }
+  </script>
+</body>
+</html>
